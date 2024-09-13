@@ -1,69 +1,69 @@
-name: 领红包
+# name: 领红包
 
-# https://docs.github.com/cn/actions/reference/events-that-trigger-workflows#workflow_dispatch
-on:
-  # 手动触发
-  workflow_dispatch:
-  # 定时任务
-  schedule:
-    # https://crontab.guru/
-    # UTC 时间，中国时区应减 8
-    #         ┌────────── minute (0 - 59)
-    #         │ ┌──────── hour (0 - 23)
-    #         │ │ ┌────── day of the month (1 - 31)
-    #         │ │ │ ┌──── month (1 - 12 or JAN-DEC)
-    #         │ │ │ │ ┌── day of the week (0 - 6 or SUN-SAT)
-    #         │ │ │ │ │
-    - cron: '45 2 * * *'
+# # https://docs.github.com/cn/actions/reference/events-that-trigger-workflows#workflow_dispatch
+# on:
+#   # 手动触发
+#   workflow_dispatch:
+#   # 定时任务
+#   schedule:
+#     # https://crontab.guru/
+#     # UTC 时间，中国时区应减 8
+#     #         ┌────────── minute (0 - 59)
+#     #         │ ┌──────── hour (0 - 23)
+#     #         │ │ ┌────── day of the month (1 - 31)
+#     #         │ │ │ ┌──── month (1 - 12 or JAN-DEC)
+#     #         │ │ │ │ ┌── day of the week (0 - 6 or SUN-SAT)
+#     #         │ │ │ │ │
+#     - cron: '45 2 * * *'
 
-jobs:
-  start:
-    name: grab coupon
-    runs-on: ubuntu-latest
+# jobs:
+#   start:
+#     name: grab coupon
+#     runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout codes
-        uses: actions/checkout@v3
+#     steps:
+#       - name: Checkout codes
+#         uses: actions/checkout@v3
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version-file: 'package.json'
+#       - name: Setup Node.js
+#         uses: actions/setup-node@v3
+#         with:
+#           node-version-file: 'package.json'
 
-      - uses: pnpm/action-setup@v2
-        name: Install pnpm
-        with:
-          run_install: false
+#       - uses: pnpm/action-setup@v2
+#         name: Install pnpm
+#         with:
+#           run_install: false
 
-      - name: Get pnpm store directory
-        shell: bash
-        run: |
-          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+#       - name: Get pnpm store directory
+#         shell: bash
+#         run: |
+#           echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
 
-      - uses: actions/cache@v3
-        name: Setup pnpm cache
-        with:
-          path: ${{ env.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
+#       - uses: actions/cache@v3
+#         name: Setup pnpm cache
+#         with:
+#           path: ${{ env.STORE_PATH }}
+#           key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+#           restore-keys: |
+#             ${{ runner.os }}-pnpm-store-
 
-      - name: Install dependencies
-        run: pnpm install
+#       - name: Install dependencies
+#         run: pnpm install
 
-      - name: Run app
-        run: pnpm start
-        env:
-          TOKEN: ${{ secrets.TOKEN }}
-          BARK_KEY: ${{ secrets.BARK_KEY }}
-          TG_USER_ID: ${{ secrets.TG_USER_ID }}
-          TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}
-          SC_SEND_KEY: ${{ secrets.SC_SEND_KEY }}
-          QMSG_KEY: ${{ secrets.QMSG_KEY }}
-          QMSG_ADMIN: ${{ secrets.QMSG_ADMIN }}
-          QYWX_SEND_CONF: ${{ secrets.QYWX_SEND_CONF }}
-          LARK_WEBHOOK: ${{ secrets.LARK_WEBHOOK }}
-          PUSHPLUS_TOKEN: ${{ secrets.PUSHPLUS_TOKEN }}
-          WXPUSHER_TOKEN: ${{ secrets.WXPUSHER_TOKEN }}
-          WXPUSHER_TOPICID: ${{ secrets.WXPUSHER_TOPICID }}
-          DINGTALK_WEBHOOK: ${{ secrets.DINGTALK_WEBHOOK }}
+#       - name: Run app
+#         run: pnpm start
+#         env:
+#           TOKEN: ${{ secrets.TOKEN }}
+#           BARK_KEY: ${{ secrets.BARK_KEY }}
+#           TG_USER_ID: ${{ secrets.TG_USER_ID }}
+#           TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}
+#           SC_SEND_KEY: ${{ secrets.SC_SEND_KEY }}
+#           QMSG_KEY: ${{ secrets.QMSG_KEY }}
+#           QMSG_ADMIN: ${{ secrets.QMSG_ADMIN }}
+#           QYWX_SEND_CONF: ${{ secrets.QYWX_SEND_CONF }}
+#           LARK_WEBHOOK: ${{ secrets.LARK_WEBHOOK }}
+#           PUSHPLUS_TOKEN: ${{ secrets.PUSHPLUS_TOKEN }}
+#           WXPUSHER_TOKEN: ${{ secrets.WXPUSHER_TOKEN }}
+#           WXPUSHER_TOPICID: ${{ secrets.WXPUSHER_TOPICID }}
+#           DINGTALK_WEBHOOK: ${{ secrets.DINGTALK_WEBHOOK }}
